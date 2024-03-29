@@ -14,6 +14,7 @@ import (
 var onAC = true
 
 func main() {
+	alert("CPU manager running")
 	if len(os.Args) > 1 {
 		if os.Args[1] == "help" {
 			fmt.Println(messages.HelpMessage)
@@ -25,9 +26,6 @@ func main() {
 				fmt.Println(err)
 				os.Exit(-1)
 			}
-		}
-		if os.Args[1] == "debug" {
-			writeCores(4)
 		}
 	} else {
 		go func() {
@@ -51,19 +49,22 @@ func main() {
 }
 
 func alert(message string) {
-	exec.Command(config.AlertDaemon(), message).Run()
+	cmd := exec.Command("notify-send", "test")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Error with alerting: ", err)
+	}
 }
 
 func writeCores(enabledCores int) {
 	cores := config.MaxAvailableCores()
 	if enabledCores < cores {
 		for i := enabledCores; i < cores; i++ {
-			err := os.WriteFile(
+			os.WriteFile(
 				fmt.Sprintf("%scpu%d/online", config.CPUDescriptorPath(), i),
 				[]byte("0"),
 				0666,
 			)
-			fmt.Println(err)
 		}
 	} else {
 		for i := range config.MaxAvailableCores() {

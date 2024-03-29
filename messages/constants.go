@@ -5,8 +5,7 @@ var (
 of your CPU based on AC power.
 Either set it to run in the background with 
 $ ./cpumgr & disown
-or set it as a systemd service by running
-$ ./cpumgr service && systemctl start cpumgr
+or set it as a systemd service.
 
 You can check if everything is in place on your
 system by running

@@ -37,7 +37,7 @@ func MaxAvailableCores() int {
 }
 
 func CoresEnabledOnBattery() int {
-	cores := os.Getenv("CPUMGR_POLL_INTERVAL")
+	cores := os.Getenv("CPUMGR_CORES_ON_BATTERY")
 	if cores == "" {
 		return 4
 	}
